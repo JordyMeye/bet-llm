@@ -1,0 +1,15 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="betmatrix mark">
+  <rect width="512" height="512" rx="112" fill="#000000"/>
+  <rect x="0.75" y="0.75" width="510.5" height="510.5" rx="111.25" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="1.5"/>
+  <g transform="translate(141.6,141.6) scale(2.6)" fill="#FFFFFF">
+    <rect x="0"  y="0"  width="22" height="22" rx="5" opacity="1"/>
+    <rect x="33" y="0"  width="22" height="22" rx="5" opacity="0.22"/>
+    <rect x="66" y="0"  width="22" height="22" rx="5" opacity="0.22"/>
+    <rect x="0"  y="33" width="22" height="22" rx="5" opacity="0.22"/>
+    <rect x="33" y="33" width="22" height="22" rx="5" opacity="1"/>
+    <rect x="66" y="33" width="22" height="22" rx="5" opacity="0.22"/>
+    <rect x="0"  y="66" width="22" height="22" rx="5" opacity="0.22"/>
+    <rect x="33" y="66" width="22" height="22" rx="5" opacity="0.22"/>
+    <rect x="66" y="66" width="22" height="22" rx="5" opacity="1"/>
+  </g>
+</svg>

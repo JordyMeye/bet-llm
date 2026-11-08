@@ -1,0 +1,162 @@
+@import 'tailwindcss';
+
+/*
+ * Accent token: aliases Tailwind's built-in `emerald` scale (already the
+ * app's green, used ad hoc as `emerald-*` in Sidebar/PredictionCard)
+ * under a semantic `accent-*` name, so `bg-accent-500`/`text-accent-400`/
+ * etc. are available anywhere without inventing new color values or
+ * replacing the existing emerald usages -- same green, just given a
+ * first-class token so new components don't have to know it's "emerald"
+ * specifically. Extends the palette, doesn't swap it out.
+ */
+/*
+ * Type tokens: the real typefaces getlyse.com uses, confirmed by reading
+ * its actual @font-face CSS directly (not approximated) -- Inter for
+ * sans/headings (already loaded via Google Fonts in index.html, no
+ * change needed there) and Geist Mono for monospace/technical content
+ * (Vercel's open-source mono font, OFL-1.1, self-hosted via
+ * @fontsource/geist-mono -- see main.tsx). Wiring these into Tailwind's
+ * own --font-sans/--font-mono theme variables means every existing
+ * font-mono usage in the app (odds, percentages, model-version tags --
+ * already applied in exactly the right 4 components) picks up the real
+ * font automatically, no per-component changes needed.
+ */
+@theme {
+  --color-accent-50: var(--color-emerald-50);
+  --color-accent-100: var(--color-emerald-100);
+  --color-accent-200: var(--color-emerald-200);
+  --color-accent-300: var(--color-emerald-300);
+  --color-accent-400: var(--color-emerald-400);
+  --color-accent-500: var(--color-emerald-500);
+  --color-accent-600: var(--color-emerald-600);
+  --color-accent-700: var(--color-emerald-700);
+  --color-accent-800: var(--color-emerald-800);
+  --color-accent-900: var(--color-emerald-900);
+  --color-accent-950: var(--color-emerald-950);
+
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #08090b;
+  color: #e4e4e7;
+  font-family: var(--font-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ambient page backdrop: two large, very low-opacity color blobs (accent
+   green top-right, sky-blue bottom-left, echoing the home/away colors
+   already used in ProbabilityBar) plus a faint dot grid for texture --
+   applied to the app shell (App.tsx root), not <body>, so it sits behind
+   the sidebar and content without fighting either element's own bg. */
+.app-shell {
+  background-color: #08090b;
+  background-image:
+    radial-gradient(900px 480px at 88% -10%, rgba(16, 185, 129, 0.14), transparent 60%),
+    radial-gradient(700px 460px at -10% 108%, rgba(56, 189, 248, 0.09), transparent 60%),
+    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.035) 1px, transparent 0);
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size:
+    auto,
+    auto,
+    28px 28px;
+}
+
+/* Reusable elevated surface -- gradient fill + inset top highlight (fake
+   edge lighting) + soft ambient drop shadow, instead of every card
+   hand-rolling `border border-white/10 bg-white/[0.02]` flat and alone. */
+.surface {
+  position: relative;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+    0 24px 48px -28px rgba(0, 0, 0, 0.7);
+}
+
+.surface-hover {
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
+}
+
+.surface-hover:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.07),
+    0 28px 56px -24px rgba(0, 0, 0, 0.8),
+    0 0 32px -14px var(--color-accent-500);
+  transform: translateY(-1px);
+}
+
+/* Lighter-weight version for cards nested inside a .surface (outcome
+   cells, market bars) -- gradient fill without stacking another heavy
+   shadow on top of the parent's. */
+.surface-nested {
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.skeleton {
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.02) 100%);
+  background-size: 800px 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+/* Lyse's headings read tighter than the browser default -- same
+   tracking-tight value Tailwind (and Lyse's own compiled CSS) already
+   defines, just applied consistently to every heading level. */
+h1,
+h2,
+h3,
+h4 {
+  letter-spacing: var(--tracking-tight, -0.025em);
+}
+
+* {
+  scrollbar-color: #2a2b31 transparent;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2b31;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
